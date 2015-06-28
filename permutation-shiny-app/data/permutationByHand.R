@@ -1,5 +1,8 @@
 # Permutation entropy method "by hand"
-require(fgui)
+#require(fgui)
+
+#inpVec   - input numerical series 
+# h       - correction parametr
 permutationByHand <- function(inpVec, h) {
   grNum <- 3                                  # but can take from input, if will need
   serSize <- length(inpVec) - grNum + 1
@@ -37,5 +40,3 @@ permutationByHand <- function(inpVec, h) {
   
   return (genSum)
 }
-
-res <- gui(permutationByHand, argEdit = c(600,300), title = "Permutation Entropy")
