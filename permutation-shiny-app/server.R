@@ -1,7 +1,8 @@
 library(shiny)
 library(ggplot2)
+library(readr)
 
-shinyServer(function(input, output) {
+shinyServer(function(input, output, session) {
   
   # Reactive -> transform input string 
   #             of numbers into integer vector 
@@ -15,16 +16,24 @@ shinyServer(function(input, output) {
   # Reactive -> get the threshold value
   getTreshold <- reactive({
     thershold <- as.numeric(input$threshold)
-    writeToIniFile(thershold, "data/thresholdValue.ini")
+    saveToIniFile(thershold, "data/thresholdValue.ini")
     return (thershold)
   })
   
   # Function
-  writeToIniFile <- function(value, valuePath) {
+  saveToIniFile <- function(value, valuePath) {
     if (!file.exists(valuePath))
       file.create(valuePath)
     cat(value, file = valuePath, sep = "\n", append = FALSE)
   }
+  
+  # Reactive
+  observe({
+    if (file.exists("data/thresholdValue.ini"))
+      updateNumericInput(session, 
+                         inputId = "threshold",
+                         value = as.integer(read_file("data/thresholdValue.ini")))
+  })
   
   # Function
   getSerSize <- function() {
