@@ -14,9 +14,17 @@ shinyServer(function(input, output) {
   
   # Reactive -> get the threshold value
   getTreshold <- reactive({
-    as.numeric(input$threshold)
+    thershold <- as.numeric(input$threshold)
+    writeToIniFile(thershold, "data/thresholdValue.ini")
+    return (thershold)
   })
   
+  # Function
+  writeToIniFile <- function(value, valuePath) {
+    if (!file.exists(valuePath))
+      file.create(valuePath)
+    cat(value, file = valuePath, sep = "\n", append = FALSE)
+  }
   
   # Function
   getSerSize <- function() {
